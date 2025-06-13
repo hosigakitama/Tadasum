@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TADASUM</title>
+    <link rel="icon" href="image/Logo.png" type="image/png">
+    <style>
+        body {
+            background-color: #000000;
+        }
+
+        .header {
+            padding: 50px;
+            color: #fff;
+            margin: 0 auto;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            text-align: center;
+            font-size: 40px;
+        }
+
+        .header p {
+            text-align: center;
+            font-size: 25px;
+        }
+
+        .wheel {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .center-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #fff;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-right: 50px solid white;
+            position: absolute;
+            top: 50%;
+            right: -355%;
+            transform: translateY(-50%);
+        }
+
+        textarea {
+            background-color: rgba(20, 20, 20, 0.2);
+            caret-color: #fff;
+            resize: none;
+            color: #fff;
+        }
+
+        .inputArea {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>KAMU MENDAPATKAN</h1>
+        <p id="winner">NONE</p>
+    </div>
+    <div class="wheel">
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <div class="center-circle" onclick="spin()">
+            <div class="triangle"></div>
+        </div>
+    </div>
+
+    <script>
+        function randomColor() {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return { r, g, b };
+        }
+
+        function toRad(deg) {
+            return deg * (Math.PI / 180.0);
+        }
+
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const width = canvas.width;
+        const height = canvas.height;
+
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = width / 2;
+
+        const items = [
+        "Gratis<br>1 Box S",
+        "Coba Lagi",
+        "Potongan<br>Rp.2000",
+        "Potongan<br>Rp.1000",
+        "Potongan<br>Rp.3000"
+        ];
+
+
+        const step = 360 / items.length;
+        let colors = [];
+        let currentDeg = 0;
+        let spinning = true;
+
+        for (let i = 0; i < items.length; i++) {
+            colors.push(randomColor());
+        }
+
+        function draw() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, toRad(0), toRad(360));
+    ctx.fillStyle = `rgb(33, 33, 33)`;
+    ctx.fill();
+
+    let startDeg = currentDeg;
+    for (let i = 0; i < items.length; i++, startDeg += step) {
+        let endDeg = startDeg + step;
+        const color = colors[i];
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius - 2, toRad(startDeg), toRad(endDeg));
+        ctx.fillStyle = `rgb(${color.r - 30}, ${color.g - 30}, ${color.b - 30})`;
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius - 30, toRad(startDeg), toRad(endDeg));
+        ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+        ctx.lineTo(centerX, centerY);
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(toRad((startDeg + endDeg) / 2));
+        ctx.textAlign = "center";
+        ctx.fillStyle = color.r > 150 || color.g > 150 || color.b > 150 ? "#000" : "#fff";
+        ctx.font = 'bold 28px serif';
+
+        let textLines = items[i].split("<br>");
+        let totalHeight = textLines.length * 25;
+        let startY = -totalHeight / 2; 
+
+        textLines.forEach((line, index) => {
+            ctx.fillText(line, 130, startY + index * 25);
+        });
+
+        ctx.restore();
+    }
+}
+
+function spin() {
+    if (!spinning) return;
+
+    spinning = false;
+
+    let speed = 85.1; 
+    const targetIndex = items.indexOf("Coba Lagi");
+    const targetDeg = (360 - targetIndex * step) % 360;
+    const totalRotation = 360 * 5 + targetDeg;
+
+    function animate() {
+        if (speed > 0.2) {
+            currentDeg += speed;
+            speed *= 0.98;
+        } else {
+            const overshoot = currentDeg % 360 - targetDeg;
+            currentDeg -= overshoot;
+
+            const winnerText = "Coba Lagi";
+            const winnerElement = document.getElementById("winner");
+            winnerElement.textContent = winnerText;
+            if (winnerText === "Coba Lagi") {
+                winnerElement.style.color = "red";
+            } else {
+                winnerElement.style.color = "black";
+            }
+
+            return;
+        }
+
+        draw();
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+        draw();
+    </script>
+</body>
+</html>

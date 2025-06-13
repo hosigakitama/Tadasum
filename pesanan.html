@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="image/Logo.png" type="image/png">
+    <title>Menu Tadasum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #2f2f2f, #1e1e1e);
+            color: #fff;
+            padding-bottom: 100px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .menu-item {
+            background-color: #fff3e0;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #000;
+            height: 100%;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 153, 0, 0.4);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .menu-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 15px;
+            text-transform: capitalize;
+        }
+
+        .menu-price {
+            font-size: 1.1rem;
+            color: #ff9900;
+        }
+
+        .orange-bg {
+            background-color: #ff9900;
+            color: white;
+        }
+
+        footer.navbar {
+            justify-content: center;
+        }
+
+        .btn-order {
+            margin-top: 10px;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+        }
+
+        .btn-order:hover {
+            background-color: #e88c00;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="py-5">
+        <div class="container text-center">
+            <a href="index.html" class="btn btn-outline-light mb-4">← Kembali ke Halaman Utama</a>
+            <h2 class="section-title mb-5">Menu Favorit Tadasum</h2>
+            <div class="row g-4" id="menuContainer">
+                <!-- Menu akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-3 navbar fixed-bottom orange-bg">
+        <p class="mb-0 text-center w-100">&copy; 2025 Tadasum. Semua Hak Dilindungi.</p>
+    </footer>
+
+    <script src="js/menu.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
